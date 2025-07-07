@@ -115,7 +115,7 @@ const Profile = () => {
           labelName="Name"
           placeholder="Enter your name"
           value={
-            user?.name ? user?.name : currentUser.email.toString().split("@")[0]
+            user?.username ? user?.username : currentUser.email.toString().split("@")[0]
           }
           handleFn={handleName}
         />
