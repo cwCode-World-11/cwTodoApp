@@ -1,0 +1,39 @@
+@font-face {
+    font-family: MACCOS_DOUBLE_Demo;
+    src: url("../assets/MACCOS_DOUBLE_Demo.otf");
+}
+
+
+.navLink{
+    background-color: rgb(34, 34, 34);
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    padding: .5em;
+    margin-bottom: 1em;
+    justify-content: flex-start;
+    gap: 5px;
+    position: relative;
+}
+
+a{
+    /* background-color: aqua; */
+    text-decoration: none;
+    color: white;
+}
+
+.logOutDiv{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+.logOutDiv>span{
+    margin-left: 10px;
+}
+
+.logo{
+    margin-bottom: 1em;
+    font-family: MACCOS_DOUBLE_Demo;
+}
