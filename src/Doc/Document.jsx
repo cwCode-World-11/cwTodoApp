@@ -23,7 +23,7 @@ const Document = ({ fns }) => {
   const { data: getUser, isPending } = useGetUser(currentUser?.uid);
   const [user, setUser] = useState();
   const [priority,setPriority]=useState("low");
-  const [category,setCategory]=useState({});
+  const [category,setCategory]=useState(null);
   const [isSaveLoading,setIsSaveLoading]=useState(false);
   const navigate = useNavigate();
   const params=useParams()
@@ -45,28 +45,37 @@ const Document = ({ fns }) => {
   useEffect(() => {
     if(!isPending && getUser) {
     setUser(getUser);
-    const t=getUser.todos.find(e=>e.id===params.id);
-    const c = getUser.categories.filter(ele=>{
-      return t.category.map(tc=>{
-        if(ele.includes(tc)) return ele 
-      })
-    })
-    .map(e=>{
-      if(t.category.includes(e)){
-        return {[e]:true}
-      }
-      return {[e]:false}
-    });
+    let t;
 
-    /*
-      what c var do?
-      well, first filtering category list from todo.
-      home page la category name onnu delete pannita intha document popover la kaataathu.but,still database la todo category la irukum (eg: stark name category list and todo category list la irukku. stark name ah home page la delete panniten. document popover la kaataathu but, database la todo category list la name irukkum). so, atha filter panni ethu ethu lam category list la irukko athu mattum thaan eduthukuren {name1:true,name2:false} format la marthuren. ippo save button ah click panna rendu list-um replace aagum which means category list la enna enna name iruko antha name thaan todo category-layum(if selected) irukkum.
-    */
-    
-    const a=Object.assign({},...c)
-    setCategory(a)
-    setPriority(t.priority)
+    if(params.id!==KEYS.newDocParam){
+      if(getUser.todos.length>0){
+        t=getUser?.todos.find(e=>e.id===params.id);
+        if(getUser.categories.length>0){
+          const c = getUser?.categories.filter(ele=>{
+          return t?.category.map(tc=>{
+            if(ele.includes(tc)) return ele 
+          })
+        })
+        .map(e=>{
+          if(t?.category.includes(e)){
+            return {[e]:true}
+          }
+          return {[e]:false}
+        });
+
+        /*
+          what c var do?
+          well, first filtering category list from todo.
+          home page la category name onnu delete pannita intha document popover la kaataathu.but,still database la todo category la irukum (eg: stark name category list and todo category list la irukku. stark name ah home page la delete panniten. document popover la kaataathu but, database la todo category list la name irukkum). so, atha filter panni ethu ethu lam category list la irukko athu mattum thaan eduthukuren {name1:true,name2:false} format la marthuren. ippo save button ah click panna rendu list-um replace aagum which means category list la enna enna name iruko antha name thaan todo category-layum(if selected) irukkum.
+        */
+        
+        const a=Object.assign({},...c)
+        setCategory(a)
+          }
+        }
+      }
+      
+      setPriority(t?.priority||"low")
     }
   }, [getUser,isPending,getUser?.priority]);
 
@@ -192,7 +201,7 @@ const Document = ({ fns }) => {
                 </RadioGroup>
               </BasicPopover>
             {/*//////Category/////////////////*/}
-              <BasicPopover
+              {category&&<BasicPopover
                 label="Category"
               >
                   <div 
@@ -220,7 +229,7 @@ const Document = ({ fns }) => {
                       )
                     })}
                   </div>
-              </BasicPopover>
+              </BasicPopover>}
           </div>
           <div
             className="rounded-md cursor-pointer items-center justify-center"
@@ -228,7 +237,7 @@ const Document = ({ fns }) => {
             onClick={async() => {
               setIsSaveLoading(true)
               let c=[];
-                if (Object.keys(category).length > 0) {
+                if (category!==null&&Object.keys(category).length > 0) {
                     c = Object.entries(category)
                       .filter(([key, value]) => value === true)
                       .map(([key]) => key.toString());
@@ -243,7 +252,11 @@ const Document = ({ fns }) => {
           <div
             className="rounded-md font-bold cursor-pointer items-center justify-center"
             style={{color:"white",display:"flex",flexDirection:"row",backgroundColor:"red",marginRight:".5em",width:"30px",height:"30px",padding:"10px"}}
-            onClick={() => navigate("/")}
+            onClick={() => {
+            navigate("/")
+            return;
+            }
+          }
           >
             <div className="icon cursor-pointer">X</div>
           </div>
