@@ -99,7 +99,7 @@ const HomeRightSideComponent = () => {
                   <Avatar src={user?.avatarURL} />
                   <div>
                     <p style={{ wordBreak: "break-all", cursor: "default" }}>
-                      {user?.name}
+                      {user?.username || currentUser?.email.split("@")[0]}
                     </p>
                   </div>
                 </div>
