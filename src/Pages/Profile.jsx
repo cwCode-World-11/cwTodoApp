@@ -91,7 +91,13 @@ const Profile = () => {
               src={user?.avatarURL}
               sx={{ width: 100, height: 100 }}
               className="m-5 cursor-pointer"
-              onClick={()=>window.open(user?.avatarURL,"_blank")}
+              onClick={()=>{
+                if(!user?.avatarURL){
+                  Toast.warning("There is no profile picture!!!")
+                  return;
+                }
+                window.open(user?.avatarURL,"_blank")
+              }}
             />
             <input
               type="file"
