@@ -8,6 +8,7 @@ import {
   FaTrashAlt,
   FaSmileBeam,
 } from "react-icons/fa";
+import { HiDocumentAdd } from "react-icons/hi";
 import { useHomeDataContext } from "../Hooks/HomeDataContext";
 import { useGlobalContext } from "../Hooks/GlobalDataContext";
 import {
@@ -48,10 +49,15 @@ const Todos = () => {
   const [completedTodos, setCompletedTodos] = useState([]); //TODO:Completed Todos
   const [searchedTodos, setSearchedTodos] = useState([]); //TODO:searched Todos
   // const [isConfettiVisible, setIsConfettiVisible] = useState(false);
+  const navigate=useNavigate();
   const inputTodoRef = useRef("");
 
   useEffect(() => {
     if (data) {
+      if(!data?.todos){
+        setTodos([]);
+        return
+      }
       const pinnedTodosArr = [],
         todosArr = [],
         completedTodosArr = [];
@@ -295,7 +301,7 @@ const Todos = () => {
           />
         </div>
       )}
-      <div className="flex flex-col items-center h-full">
+      <div className="aaa flex flex-col items-center h-full">
         <AddAndSearch
           inputTodoRef={inputTodoRef}
           handleAdd={
@@ -406,6 +412,13 @@ const Todos = () => {
           </div>
         )}
       </div>
+      <div className="bg-red-500 w-full h-fit relative">
+      <div 
+      className="absolute bottom-10 right-10 bg-blue-500 p-3 rounded-full"
+      onClick={()=>navigate("/documentView/new")}
+      >
+        <HiDocumentAdd size={30}/>
+      </div></div>
     </section>
   );
 };
